@@ -1,4 +1,4 @@
-package assign6;
+package tests;
 
 import org.junit.Test;
 
@@ -7,10 +7,10 @@ import static org.junit.Assert.*;
 /**
  * Created by Windozer on 7/30/2015.
  */
-public class CheckOutControlTest {
+public class CollectionTest {
 
     @Test
-    public void testCheckout() throws Exception {
+    public void testAddResource() throws Exception {
 
     }
 }

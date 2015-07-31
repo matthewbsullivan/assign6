@@ -1,5 +1,7 @@
-package assign6;
+package tests;
 
+import assign6.Member;
+import assign6.Resource;
 import org.junit.Test;
 
 import java.util.Calendar;
