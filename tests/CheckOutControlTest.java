@@ -12,95 +12,120 @@ import static org.junit.Assert.*;
  */
 public class CheckOutControlTest {
 
+    //arbitrary member and resource instants to use as test data
+    Member memberTest = new Student(222);
+    Movie resourceTest = new Movie(134, "Haywire", "35610");
+
+    //instantiate a MemberList and Collection
+    MemberList memberListTest = new MemberList();
+    Collection collectionTest = new Collection();
+
+    //Construct a new CheckOutControl using the MemberList and Collection
+    CheckOutControl testControl = new CheckOutControl(memberListTest,
+            collectionTest);
+
     /**
-     * We are testing the following cases for checkout():
-     * 1. An invalid member tries to checkout an invalid resource: unsuccessful
-     * 2. A valid member tries to checkout an invalid resource: unsuccessful
-     *  2a. Resource is not in Collection.
-     *  2b. Resource is already checked out.
-     * 3. An invalid member tries to checkout a valid resource: unsuccessful
-     * 4. A valid member tries to checkout a valid resource: successful
-     *
-     * Additionally, we are checking that when checkout is successful, a
-     * resource's status is changed to CHECKED_OUT and the resource is added
-     * to the member.
-     *
-     * Test cases are out of order to minimize repetitious code.
-     *
+     * Simulate an invalid member attempting to check out an invalid
+     * resource. Will equal something other than null in the
+     * event of a failure.
      * @throws Exception
      */
     @Test
-    public void testCheckout() throws Exception {
-        //arbitrary member and resource instants to use as test data
-        Member memberTest = new Student(222);
-        Movie resourceTest = new Movie(134, "Haywire", "35610");
+    public void testInvalidMemberInvalidResource() throws Exception {
 
-        //instantiate a MemberList and Collection
-        MemberList memberListTest = new MemberList();
-        Collection collectionTest = new Collection();
+        assertNull("Invalid member can't checkout an invalid resource",
+                testControl.checkout(memberTest.getMemberID(),
+                        resourceTest.getResourceID()));
+    }
 
-        //Construct a new CheckOutControl using the MemberList and Collection
-        CheckOutControl test = new CheckOutControl(memberListTest,
-                collectionTest);
+    /**
+     * Simulate a valid member attempting to check out a resource not in
+     * Collection. Will equal something other than null in the
+     * event of a failure.
+     * @throws Exception
+     */
+    @Test
+    public void testCheckoutNonExistingResource() throws Exception {
 
-        //Case 1.
-        //Simulate an invalid member attempting to check out an invalid
-        // resource. Will equal something other than null in the
-        // event of a failure.
-        assertEquals("Invalid member can't checkout an invalid resource",null,
-                test.checkout(memberTest.getMemberID(),
-                resourceTest.getResourceID()));
-
-        //now add our test Member to our MemberList
         memberListTest.addMember(memberTest);
 
-        //Case 2b.
-        //Simulate a valid member attempting to check out a resource not in
-        // Collection. Will equal something other than null in the
-        // event of a failure.
-        assertEquals("Can't check out a resource not in Collection", null, test
-                .checkout
-                (memberTest.getMemberID(), resourceTest.getResourceID()));
+        assertNull("Can't check out a resource not in Collection",
+                testControl.checkout(memberTest.getMemberID(),
+                        resourceTest.getResourceID()));
+    }
 
-        //now add our test Resource to our Collection
+    /**
+     *Simulate a valid member attempting to check out a valid resource.
+     */
+    @Test
+    public void testValidCheckout() {
+
+        memberListTest.addMember(memberTest);
         collectionTest.addResource(resourceTest);
 
-        //Case 4.
-        //Simulate a valid member attempting to check out a valid resource.
-        // Will equal null in the event of a failure.
-        assertNotEquals("Successful checkout should not return null", null, test
-                .checkout(memberTest.getMemberID(),
+        assertNotNull("Successful checkout should not return null",
+                testControl.checkout(memberTest.getMemberID(),
                         resourceTest.getResourceID()));
+    }
+
+    /**
+     * Simulate a checkout and test that the resource's status has been
+     * changed to 0 (Off the shelf)
+     */
+    @Test
+    public void testCheckoutStatus() {
+
+        collectionTest.addResource(resourceTest);
+        memberListTest.addMember(memberTest);
+        testControl.checkout(memberTest.getMemberID(),
+                resourceTest.getResourceID());
+
         assertEquals("Resource status should equal zero", 0, resourceTest
                 .getStatus());
+    }
+
+    /**
+     * Simulate a checkout and ensure that the resource has been added to the
+     * member.
+     */
+    @Test
+    public void testResourceIDAdded() {
+
+        collectionTest.addResource(resourceTest);
+        memberListTest.addMember(memberTest);
+        testControl.checkout(memberTest.getMemberID(),
+                resourceTest.getResourceID());
+
         assertEquals("Resource ID should be added to Member", resourceTest
                 .getResourceID(), memberTest.findResource(resourceTest
-                        .getResourceID()));
+                .getResourceID()).getResourceID());
+    }
 
+    /**
+     * Simulate a valid member attempting to check out a checked-out resource.
+     */
+    @Test
+    public void testCheckoutAlreadyCheckedOutResource() {
 
-        //Change resource to CHECKED_OUT
+        collectionTest.addResource(resourceTest);
+        memberListTest.addMember(memberTest);
         resourceTest.setStatus(Resource.CHECKED_OUT);
 
-        //Case 2a.
-        //Simulate a valid member attempting to check out a checked out
-        // resource. Will equal something other than null in the
-        // event of a failure.
-        assertEquals("Can't check out a resource that has already been " +
-                "checked out", null, test.checkout(memberTest.getMemberID(),
-                        resourceTest.getResourceID()));
+        assertNull("Can't check out a resource that has already been " +
+                "checked out", testControl.checkout(memberTest.getMemberID(),
+                resourceTest.getResourceID()));
+    }
 
-        //put resource back on the shelf
-        resourceTest.setStatus(Resource.ON_THE_SHELF);
+    /**
+     * Simulate an invalid member attempting to checkout a valid resource.
+     */
+    @Test
+    public void testInvalidMemberCheckout() {
 
-        //now remove our test member from our MemberList
-        memberListTest.removeMember(memberTest.getMemberID());
+        collectionTest.addResource(resourceTest);
 
-        //Case 3.
-        //Simulate an invalid member attempting to check out a valid
-        // resource. Will equal something other than null in the
-        // event of a failure.
-        assertEquals("Member not in MemberList can't checkout a resource",
-                null, test.checkout(memberTest.getMemberID(),
+        assertNull("Member not in MemberList can't checkout a resource",
+                testControl.checkout(memberTest.getMemberID(),
                         resourceTest.getResourceID()));
     }
 }
