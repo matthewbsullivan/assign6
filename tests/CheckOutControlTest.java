@@ -47,7 +47,7 @@ public class CheckOutControlTest {
         //Simulate an invalid member attempting to check out an invalid
         // resource. Will equal something other than null in the
         // event of a failure.
-        assertEquals("Failed checkout should return null",null,
+        assertEquals("Invalid member can't checkout an invalid resource",null,
                 test.checkout(memberTest.getMemberID(),
                 resourceTest.getResourceID()));
 
@@ -58,7 +58,8 @@ public class CheckOutControlTest {
         //Simulate a valid member attempting to check out a resource not in
         // Collection. Will equal something other than null in the
         // event of a failure.
-        assertEquals("Failed checkout should return null", null, test.checkout
+        assertEquals("Can't check out a resource not in Collection", null, test
+                .checkout
                 (memberTest.getMemberID(), resourceTest.getResourceID()));
 
         //now add our test Resource to our Collection
@@ -84,8 +85,8 @@ public class CheckOutControlTest {
         //Simulate a valid member attempting to check out a checked out
         // resource. Will equal something other than null in the
         // event of a failure.
-        assertEquals("Failed checkout should return null", null, test
-                .checkout(memberTest.getMemberID(),
+        assertEquals("Can't check out a resource that has already been " +
+                "checked out", null, test.checkout(memberTest.getMemberID(),
                         resourceTest.getResourceID()));
 
         //put resource back on the shelf
@@ -98,8 +99,8 @@ public class CheckOutControlTest {
         //Simulate an invalid member attempting to check out a valid
         // resource. Will equal something other than null in the
         // event of a failure.
-        assertEquals("Failed checkout should return null", null, test
-                .checkout(memberTest.getMemberID(),
+        assertEquals("Member not in MemberList can't checkout a resource",
+                null, test.checkout(memberTest.getMemberID(),
                         resourceTest.getResourceID()));
     }
 }
