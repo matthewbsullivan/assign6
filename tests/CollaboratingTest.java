@@ -42,7 +42,7 @@ public class CollaboratingTest {
     @Test
     public void TestUpdateNewDate() throws Exception{
         //////////////////////////////////////////////////////////////////////
-        //Student and book test.
+        //studentMemberTest and book test.
         ///////////////////////////////////////////////////////////////////////
         Calendar testDate = Calendar.getInstance();
         //Student and book test.
@@ -65,7 +65,7 @@ public class CollaboratingTest {
         assertEquals("The new date was not updated", testDateOld,testDate);
 
         //////////////////////////////////////////////////////////////////////
-        //Student2 and movie test.
+        //studentMemberTest2 and movie test.
         ///////////////////////////////////////////////////////////////////////
 
         testDate = Calendar.getInstance();
@@ -75,7 +75,7 @@ public class CollaboratingTest {
         testMovie.setDueDate(testDate);
         testDateOld = testDate;
 
-        testControl.checkout(222,123456);
+        testControl.checkout(2222,123456);
 
         //Try to change due date.
         testMovie.calculateNewDueDate(testDate, studentMemberTest2);
