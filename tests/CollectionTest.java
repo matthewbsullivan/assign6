@@ -13,6 +13,9 @@ import static org.junit.Assert.*;
  */
 public class CollectionTest {
 
+    /**
+     * Test Methods for Problem #2
+     */
     Book testBook1 = new Book(1234, "Moby-Dick", "9780520045484", "Herman" +
             " " + "Melville");
 

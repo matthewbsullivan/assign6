@@ -12,6 +12,9 @@ import static org.junit.Assert.*;
  */
 public class CheckOutControlTest {
 
+    /**
+     * Test Methods for Problem #4
+     */
     //arbitrary member and resource instants to use as test data
     Member memberTest = new Student(222);
     Movie resourceTest = new Movie(134, "Haywire", "35610");
